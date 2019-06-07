@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#declare variables
+declare -A txn
+
+#load functions
+. ~/gtran/bin/fn
+
+login
+load_transactions
+process_input $1 $2
+update_file
+display
