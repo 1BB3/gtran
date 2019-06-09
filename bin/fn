@@ -18,11 +18,11 @@ validate_login(){
     login
 } 
 
-#function to load the transactions file contents of user into an txn array
+#function to load the transactions file contents of user into txn array
 load_transactions(){
 while read v; do
-if [[ $v =~ ^([a-z ]+):(-?[0-9]+)$ ]]; then
-    txn["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}"
+if [[ $v =~ ^([a-z ]+):(-?[0-9]+)$ ]]; then        #check format with regex
+    txn["${BASH_REMATCH[1]}"]="${BASH_REMATCH[2]}" #and store the matches in txn array
 fi
 done < ~/.gtran/users/$username/transactions
 }
@@ -51,9 +51,9 @@ confirm_new_entry(){
 
 #function to store the transactions in the file again
 update_file(){
-    echo -n '' > ~/.gtran/users/$username/transactions
+    echo -n '' > ~/.gtran/users/$username/transactions            #empty the file
     for i in ${!txn[@]}; do
-    echo $i:${txn["$i"]} >> ~/.gtran/users/$username/transactions
+    echo $i:${txn["$i"]} >> ~/.gtran/users/$username/transactions #and add the updated transactions from txn array
     done 
 }
 
