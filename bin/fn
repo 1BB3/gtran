@@ -14,7 +14,7 @@ validate_login(){
     while read users; do
         if [[ $username = $users ]];then return 0; fi
     done < ~/.gtran/config/users
-    echo "Incorrect Login"
+    echo "[gtran] Incorrect Login"
     login
 } 
 
@@ -29,21 +29,23 @@ done < ~/.gtran/users/$username/transactions
 
 #function to do the core work
 process_input(){
-    if [[ ${txn[$1]} ]]; then #if no missing key
-        txn["$1"]=$(( txn["$1"]+$2 )) #update existing transaction 
+    if [[ ${txn[$loanee]} ]]; then #if no missing key
+        txn[$loanee]=$(( txn[$loanee]+$amount )) #update existing transaction 
+        echo [gtran] Transactions Updated
     else
-        confirm_new_entry $1 $2 #promt for inserting new entry
+        confirm_new_entry #promt for inserting new entry
     fi
 }
 
 #function to ask to add new entry
 confirm_new_entry(){
-    echo $1 is not enetered
+    echo [gtran] $loanee is not entered
     echo -n '[gtran] Add new Entry (y/n) ? '
     read addnew
     if [[ $addnew = 'y' ]]
     then 
-    txn["$1"]=$2 
+    txn[$loanee]=$amount
+    echo [gtran] Loanee $loanee is added.
     fi
 }
 
@@ -55,6 +57,29 @@ update_file(){
     done 
 }
 
+#function to display the transactions
 display(){
+    echo -----------Transactions-----------
     for i in ${!txn[@]};do echo "$i --> ${txn["$i"]}"; done
+    echo ----------------------------------
+}
+
+#function to check the parameters and set appropriate flags, set loanee and amount values
+resolve_params(){
+    for (( i=1;i<=$#;i++ )); do #loop through all the params
+        if [[ ${!i} = '-d' ]]; then _display=1; fi #if -d then set display flag
+        if [[ ${!i} = '-x' ]]; then _rm_zero=1; fi #if -x then set rm_zero flag
+        if [[ ${!i} =~ ^[0-9-]+$ ]];then amount=${!i}; fi #set the value of loanee
+        if [[ ${!i} =~ ^[a-z]+$ ]];then loanee=${!i}; fi #set the value of amount
+    done
+}
+
+#function to remove the transaction whose amount has become zero
+rm_zero(){
+    count=0 #to count the number of zero amounts
+    for i in ${!txn[@]}; do # loop through the transactions
+        if [[ txn[$i] -eq 0 ]]; then count=$(( count=count+1 )); unset txn[$i]; fi #if amount=0 unset the array element
+    done
+    update_file
+    echo [gtran] $count Transactions were removed.
 }
