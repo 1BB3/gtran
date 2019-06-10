@@ -1,9 +1,9 @@
 #!/bin/bash
 
 mkdir ~/.gtran #make the root directory
-cp -r bin/ ~/.gtran/ #copy the core directories
-cp -r config/ ~/.gtran/ #copy the core directories
-cp -r users/ ~/.gtran/ #copy the core directories
+cp -r bin/ ~/.gtran/ #copy the bin directory
+mkdir ~/.gtran/config #make the config directory
+mkdir ~/.gtran/users #make the users directory
 
 #promt for username 
 echo -n [gtran] Enter your username :
