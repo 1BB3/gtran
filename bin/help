@@ -1,0 +1,6 @@
+[gtran]
+Usage: gtran [options] <loanee> <amount>
+
+Options:
+    -d      Display the transactions
+    -x      Remove the transactions whose amount has become 0  

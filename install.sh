@@ -6,7 +6,7 @@ mkdir ~/.gtran/config #make the config directory
 mkdir ~/.gtran/users #make the users directory
 
 #promt for username 
-echo -n [gtran] Enter your username :
+echo -n "[gtran] Enter your username : "
 read username
 
 #make user specific configurations

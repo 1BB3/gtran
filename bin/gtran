@@ -12,12 +12,10 @@ declare count=0 #counter for no of zero transaction
 . ~/.gtran/bin/fn
 
 resolve_params $@
-if [[ $loanee && $amount || $_display = 1 || $_rm_zero = 1 ]]; then login;else
-echo help page #need to add help page later, for now just this... XD
-fi
+if [[ $loanee && $amount || $_display = 1 || $_rm_zero = 1 && $1 != '--help' ]]; then login;else 
+cat ~/.gtran/bin/help
+echo
+fi #Help Page
 if [[ $loanee && $amount ]]; then load_transactions; process_input;update_file; fi
 if [[ $_rm_zero = 1 ]]; then load_transactions; rm_zero; fi
 if [[ $_display = 1 ]]; then load_transactions ;display ; fi
-
-
-
