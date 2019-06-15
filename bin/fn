@@ -70,7 +70,7 @@ resolve_params(){
         if [[ ${!i} = '-d' ]]; then _display=1; fi #if -d then set display flag
         if [[ ${!i} = '-x' ]]; then _rm_zero=1; fi #if -x then set rm_zero flag
         if [[ ${!i} =~ ^[0-9-]+$ ]];then amount=${!i}; fi #set the value of loanee
-        if [[ ${!i} =~ ^[a-z-]+$ ]];then loanee=${!i}; fi #set the value of amount
+        if [[ ${!i} =~ ^[a-z]+-*[a-z]+$ ]];then loanee=${!i}; fi #set the value of amount
     done
 }
 
